@@ -3,11 +3,15 @@ package com.example.instagramclone;
 import android.app.Application;
 
 import com.parse.Parse;
+import com.parse.ParseObject;
 
 public class ParseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        //Register Parse models
+        ParseObject.registerSubclass(Post.class);
 
         // set applicationId and server based on values in Heroku settings
         // clientKey is not needed unless explicitly configured
