@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +25,7 @@ public class PostFragment extends Fragment {
 
     public static final String TAG = "PostFragment";
     private RecyclerView rvPosts;
+    protected Button btnLogout;
     protected PostsAdapter adapter;
     protected List<Post> allPosts;
 
@@ -43,7 +45,8 @@ public class PostFragment extends Fragment {
         // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
         super.onViewCreated(view, savedInstanceState);
         rvPosts = view.findViewById(R.id.rvPosts);
-
+        btnLogout = view.findViewById(R.id.btnLogout);
+        setButtonVisibility(view);
         // Steps to use the recycler view
         // 0. create layout for one row in the list
         // 1. create the adapter
@@ -55,6 +58,10 @@ public class PostFragment extends Fragment {
         // 4. set the layout manager on the recycler view
         rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
         queryPosts(); // get data, update data, and notify adapter there is new data
+    }
+
+    protected void setButtonVisibility(View view) {
+        btnLogout.setVisibility(View.GONE);
     }
 
     protected void queryPosts() {
