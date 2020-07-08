@@ -7,20 +7,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.instagramclone.Post;
+import com.example.instagramclone.PostsAdapter;
 import com.example.instagramclone.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostFragment extends Fragment {
 
     public static final String TAG = "PostFragment";
     private RecyclerView rvPosts;
+    private PostsAdapter adapter;
+    private List<Post> allPosts;
 
     // The onCreateView method is called when Fragment should create its View object hierarchy,
     // either dynamically or via XML layout inflation.
@@ -42,11 +47,14 @@ public class PostFragment extends Fragment {
         // Steps to use the recycler view
         // 0. create layout for one row in the list
         // 1. create the adapter
+        allPosts = new ArrayList<>();
+        adapter = new PostsAdapter(getContext(), allPosts);
         // 2. create the data source
         // 3. set the adapter on the recycler view
+        rvPosts.setAdapter(adapter);
         // 4. set the layout manager on the recycler view
-        queryPosts();
-
+        rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
+        queryPosts(); // get data, update data, and notify adapter there is new data
     }
 
     private void queryPosts() {
@@ -62,6 +70,8 @@ public class PostFragment extends Fragment {
                 for(Post post: posts) {
                     Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
                 }
+                allPosts.addAll(posts);
+                adapter.notifyDataSetChanged();
             }
         });
     }
