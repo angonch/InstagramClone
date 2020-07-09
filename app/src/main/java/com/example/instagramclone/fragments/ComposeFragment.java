@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
-import com.example.instagramclone.Post;
+import com.example.instagramclone.models.Post;
 import com.example.instagramclone.R;
 import com.parse.ParseException;
 import com.parse.ParseFile;
