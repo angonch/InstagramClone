@@ -1,6 +1,7 @@
 package com.example.instagramclone.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.instagramclone.R;
+import com.example.instagramclone.activities.DetailsActivity;
 import com.example.instagramclone.models.Post;
 import com.parse.ParseFile;
 
@@ -70,13 +72,24 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvDescription = itemView.findViewById(R.id.tvDescription);
         }
 
-        public void bind(Post post) {
+        public void bind(final Post post) {
             tvUsername.setText(post.getUser().getUsername());
             tvDescription.setText(post.getDescription());
             ParseFile image = post.getImage();
             if(image != null) {
+                ivImage.setVisibility(View.VISIBLE);
                 Glide.with(context).load(image.getUrl()).into(ivImage);
+            } else {
+                ivImage.setVisibility(View.INVISIBLE);
             }
+            this.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(context, DetailsActivity.class);
+                    i.putExtra("post", post);
+                    context.startActivity(i);
+                }
+            });
         }
     }
 }
