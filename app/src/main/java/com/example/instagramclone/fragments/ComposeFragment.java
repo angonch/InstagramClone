@@ -20,14 +20,17 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
-import com.example.instagramclone.models.Post;
 import com.example.instagramclone.R;
+import com.example.instagramclone.models.Post;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -41,6 +44,7 @@ public class ComposeFragment extends Fragment {
     private Button btnSubmit;
 
     private File photoFile;
+    private File resizedFile;
     private String photoFileName = "photo.jpg";
 
     // The onCreateView method is called when Fragment should create its View object hierarchy,
@@ -84,7 +88,7 @@ public class ComposeFragment extends Fragment {
                     return;
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
-                savePost(description, currentUser, photoFile);
+                savePost(description, currentUser, resizedFile);
             }
         });
 
@@ -117,13 +121,38 @@ public class ComposeFragment extends Fragment {
             if (resultCode == RESULT_OK) {
                 // by this point we have the camera photo on disk
                 Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                // RESIZE BITMAP, see section below
+                // Resize the bitmap to 150x100 (width x height)
+                Bitmap resizedBitmap = scaleToFitWidth(takenImage, 500);
                 // Load the taken image into a preview
-                ivPostImage.setImageBitmap(takenImage);
+                ivPostImage.setImageBitmap(resizedBitmap);
+
+                // write that smaller bitmap back to disk
+                // Configure byte output stream
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                // Compress the image further
+                resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+                // Create a new file for the resized bitmap (`getPhotoFileUri` defined above)
+                resizedFile = getPhotoFileUri(photoFileName + "_resized");
+                try {
+                    resizedFile.createNewFile();
+                    FileOutputStream fos = new FileOutputStream(resizedFile);
+                    // Write the bytes of the bitmap to file
+                    fos.write(bytes.toByteArray());
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else { // Result was a failure
                 Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    // scale and keep aspect ratio
+    public static Bitmap scaleToFitWidth(Bitmap b, int width)
+    {
+        float factor = width / (float) b.getWidth();
+        return Bitmap.createScaledBitmap(b, width, (int) (b.getHeight() * factor), true);
     }
 
     // Returns the File for a photo stored on disk given the fileName
