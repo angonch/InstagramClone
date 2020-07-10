@@ -26,11 +26,11 @@ import java.util.List;
 public class PostFragment extends Fragment {
 
     public static final String TAG = "PostFragment";
-    private RecyclerView rvPosts;
+    protected RecyclerView rvPosts;
     protected Button btnLogout;
     protected PostsAdapter adapter;
     protected List<Post> allPosts;
-    private SwipeRefreshLayout swipeContainer;
+    protected SwipeRefreshLayout swipeContainer;
 
     // The onCreateView method is called when Fragment should create its View object hierarchy,
     // either dynamically or via XML layout inflation.
@@ -80,8 +80,12 @@ public class PostFragment extends Fragment {
         // 3. set the adapter on the recycler view
         rvPosts.setAdapter(adapter);
         // 4. set the layout manager on the recycler view
-        rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvPosts.setLayoutManager(getLayoutManager());
         queryPosts(); // get data, update data, and notify adapter there is new data
+    }
+
+    protected LinearLayoutManager getLayoutManager() {
+        return new LinearLayoutManager(getContext());
     }
 
     protected void setButtonVisibility(View view) {
