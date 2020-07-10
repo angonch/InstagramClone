@@ -1,41 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="16dp"
-    tools:context=".activities.LoginActivity">
+    tools:context=".activities.LoginActivity"
+    android:background="@drawable/gradient_purple_pink">
 
     <EditText
         android:id="@+id/etUsername"
-        android:layout_width="match_parent"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:hint="username" />
+        android:layout_below="@+id/ivLogo"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="false"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="#FFFFFF"
+        android:hint="username"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#E91E63"
+        android:textColorHint="#80FFFFFF"
+        android:textColorLink="#FFFFFF" />
 
     <EditText
         android:id="@+id/etPassword"
-        android:inputType="textPassword"
-        android:layout_width="match_parent"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/etUsername"
-        android:hint="password" />
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="#FFFFFF"
+        android:hint="password"
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#E91E63"
+        android:textColorHint="#80FFFFFF" />
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#29000000"
         android:text="Login"
-        android:backgroundTint="#10A5F5"/>
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/btnSignup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etPassword"
-        android:backgroundTint="#85EA41"
-        android:text="Sign Up" />
-</LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:backgroundTint="#29000000"
+        android:shadowColor="#00FFFFFF"
+        android:text="Sign Up"
+        android:textColor="#FFFFFF" />
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="72dp"
+        android:src="@drawable/nux_dayone_landing_logo" />
+</RelativeLayout>
