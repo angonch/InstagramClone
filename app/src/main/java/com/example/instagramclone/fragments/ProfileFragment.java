@@ -1,5 +1,6 @@
 package com.example.instagramclone.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,14 +58,16 @@ public class ProfileFragment extends PostFragment {
             public void onClick(View view) {
                 //logout button clicked
                 ParseUser.logOut();
-                goLoginActivity();
+                goLogoutActivity();
             }
         });
     }
 
-    private void goLoginActivity() {
+    private void goLogoutActivity() {
+        Activity oldActivity = getActivity();
         Intent i = new Intent(getContext(), LoginActivity.class);
         startActivity(i);
+        oldActivity.finish();
     }
 
     @Override
