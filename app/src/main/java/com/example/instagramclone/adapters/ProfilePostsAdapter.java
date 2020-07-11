@@ -64,17 +64,20 @@ public class ProfilePostsAdapter extends RecyclerView.Adapter<ProfilePostsAdapte
         TextView tvUsername;
         ImageView ivImage;
         TextView tvDescription;
+        TextView tvTimestamp;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvUsername = itemView.findViewById(R.id.tvUsername);
             ivImage = itemView.findViewById(R.id.ivImage);
             tvDescription = itemView.findViewById(R.id.tvDescription);
+            tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
         }
 
         public void bind(final Post post) {
             tvUsername.setVisibility(View.GONE);
             tvDescription.setVisibility(View.GONE);
+            tvTimestamp.setVisibility(View.GONE);
             ivImage.getLayoutParams().height = 300;
             ParseFile image = post.getImage();
             if(image != null) {

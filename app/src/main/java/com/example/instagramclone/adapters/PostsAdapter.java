@@ -64,17 +64,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         TextView tvUsername;
         ImageView ivImage;
         TextView tvDescription;
+        TextView tvTimestamp;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvUsername = itemView.findViewById(R.id.tvUsername);
             ivImage = itemView.findViewById(R.id.ivImage);
             tvDescription = itemView.findViewById(R.id.tvDescription);
+            tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
         }
 
         public void bind(final Post post) {
             tvUsername.setText(post.getUser().getUsername());
             tvDescription.setText(post.getDescription());
+            tvTimestamp.setText(post.getRelativeTimeAgo(post.getCreatedAt()));
             ParseFile image = post.getImage();
             if(image != null) {
                 ivImage.setVisibility(View.VISIBLE);

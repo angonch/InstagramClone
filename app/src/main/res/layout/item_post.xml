@@ -27,4 +27,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="description" />
+    <TextView
+        android:id="@+id/tvTimestamp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="timestamp" />
 </LinearLayout>

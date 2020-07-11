@@ -22,8 +22,8 @@ The following **stretch** features are implemented:
 - [X] Style the login page to look like the real Instagram login page.
 - [ ] Style the feed to look like the real Instagram feed.
 - [X] User should switch between different tabs - viewing all posts (feed view), capture (camera and photo gallery view) and profile tabs (posts made) using fragments and a Bottom Navigation View.
-- [ ] User can load more posts once he or she reaches the bottom of the feed using endless scrolling.
-- [ ] Show the username and creation time for each post
+- [X] User can load more posts once he or she reaches the bottom of the feed using endless scrolling.
+- [X] Show the username and creation time for each post
 - [ ] After the user submits a new post, show an indeterminate progress bar while the post is being uploaded to Parse
 - User Profiles:
   - [ ] Allow the logged in user to add a profile photo
@@ -39,8 +39,8 @@ The following **additional** features are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1.
-2.
+1. How to implement comments and save them to Parse
+2. How to add verification that it is a real address
 
 ## Video Walkthrough
 
@@ -59,7 +59,13 @@ List an 3rd party libraries, icons, graphics, or other assets you used in your a
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+The most difficult part of this app was creating intents to open the camera and saving images to Parse, because we
+had to work with saving the Bitmap and making the image scaled down and then saving it to Parse.
+Working with Parse was also a challenge because it was new to learn that we did not have to make User models
+and that logging/signing up a user and checking the credentials is done through Parse.
+I also had challenges with the different layouts because since I didn't want to have too much repeated code
+or make an extra layout for a profile post, I had to change the views from the code and override methods in
+the child classes which was difficult to keep track of so that I didn't have null pointer exceptions.
 
 ## License
 
