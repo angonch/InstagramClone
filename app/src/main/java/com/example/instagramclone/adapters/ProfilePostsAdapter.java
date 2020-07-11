@@ -80,17 +80,17 @@ public class ProfilePostsAdapter extends RecyclerView.Adapter<ProfilePostsAdapte
             if(image != null) {
                 ivImage.setVisibility(View.VISIBLE);
                 Glide.with(context).load(image.getUrl()).into(ivImage);
+                ivImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(context, DetailsActivity.class);
+                        i.putExtra("post", post);
+                        context.startActivity(i);
+                    }
+                });
             } else {
-                ivImage.setVisibility(View.INVISIBLE);
+                ivImage.setVisibility(View.GONE);
             }
-            ivImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(context, DetailsActivity.class);
-                    i.putExtra("post", post);
-                    context.startActivity(i);
-                }
-            });
         }
     }
 }

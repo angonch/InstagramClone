@@ -44,7 +44,7 @@ public class DetailsActivity extends AppCompatActivity {
             Glide.with(getApplicationContext()).load(image.getUrl()).into(ivImage);
             Log.i(TAG, "image to post: " + image.getUrl());
         }
-        tvTimestamp.setText(getRelativeTimeAgo(post.getCreatedAt()) + " ago");
+        tvTimestamp.setText(getRelativeTimeAgo(post.getCreatedAt()));
 
     }
 
@@ -62,7 +62,11 @@ public class DetailsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         String[] num = relativeDate.split(" ");
-        relativeDate = num[0] + num[1].charAt(0);
+        if(num.length > 1) {
+            relativeDate = num[0] + num[1].charAt(0) + " ago";
+        } else {
+            relativeDate = num[0];
+        }
 
         return relativeDate;
     }

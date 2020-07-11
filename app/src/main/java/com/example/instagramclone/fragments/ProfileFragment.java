@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.instagramclone.EndlessRecyclerViewScrollListener;
 import com.example.instagramclone.R;
 import com.example.instagramclone.activities.LoginActivity;
 import com.example.instagramclone.adapters.ProfilePostsAdapter;
@@ -47,7 +49,7 @@ public class ProfileFragment extends PostFragment {
         rvPosts.setAdapter(adapter);
         // 4. set the layout manager on the recycler view
         rvPosts.setLayoutManager(getLayoutManager());
-        queryPosts(); // get data, update data, and notify adapter there is new data
+        queryPosts(0); // get data, update data, and notify adapter there is new data
     }
 
     @Override
@@ -72,15 +74,24 @@ public class ProfileFragment extends PostFragment {
 
     @Override
     protected GridLayoutManager getLayoutManager() {
-        return new GridLayoutManager(getContext(), 3);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+        scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                queryPosts(page);
+            }
+        };
+        rvPosts.addOnScrollListener(scrollListener);
+        return gridLayoutManager;
     }
 
     @Override
-    protected void queryPosts() {
+    protected void queryPosts(final int page) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
         query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
         query.setLimit(20);
+        query.setSkip(page*20);
         query.addDescendingOrder(Post.KEY_CREATEDAT);
         query.findInBackground(new FindCallback<Post>() {
             @Override
@@ -92,8 +103,12 @@ public class ProfileFragment extends PostFragment {
                 for(Post post: posts) {
                     Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
                 }
-                allPosts.addAll(posts);
-                adapter.notifyDataSetChanged();
+                Log.i(TAG, allPosts.toString());
+                if(page == 0){
+                    adapter.clear();
+                }
+                adapter.addAll(posts);
+                //adapter.notifyDataSetChanged();
             }
         });
     }

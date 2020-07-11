@@ -13,9 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.instagramclone.models.Post;
-import com.example.instagramclone.adapters.PostsAdapter;
+import com.example.instagramclone.EndlessRecyclerViewScrollListener;
 import com.example.instagramclone.R;
+import com.example.instagramclone.adapters.PostsAdapter;
+import com.example.instagramclone.models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -31,6 +32,7 @@ public class PostFragment extends Fragment {
     protected PostsAdapter adapter;
     protected List<Post> allPosts;
     protected SwipeRefreshLayout swipeContainer;
+    protected EndlessRecyclerViewScrollListener scrollListener;
 
     // The onCreateView method is called when Fragment should create its View object hierarchy,
     // either dynamically or via XML layout inflation.
@@ -55,7 +57,7 @@ public class PostFragment extends Fragment {
             @Override
             public void onRefresh() {
                 adapter.clear();
-                queryPosts();
+                queryPosts(0);
                 // To keep animation for 2 seconds
                 new Handler().postDelayed(new Runnable() {
                     @Override public void run() {
@@ -81,21 +83,30 @@ public class PostFragment extends Fragment {
         rvPosts.setAdapter(adapter);
         // 4. set the layout manager on the recycler view
         rvPosts.setLayoutManager(getLayoutManager());
-        queryPosts(); // get data, update data, and notify adapter there is new data
+        queryPosts(0); // get data, update data, and notify adapter there is new data
     }
 
     protected LinearLayoutManager getLayoutManager() {
-        return new LinearLayoutManager(getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                queryPosts(page);
+            }
+        };
+        rvPosts.addOnScrollListener(scrollListener);
+        return linearLayoutManager;
     }
 
     protected void setButtonVisibility(View view) {
         btnLogout.setVisibility(View.GONE);
     }
 
-    protected void queryPosts() {
+    protected void queryPosts(int page) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
         query.setLimit(20);
+        query.setSkip(page*20);
         query.addDescendingOrder(Post.KEY_CREATEDAT);
         query.findInBackground(new FindCallback<Post>() {
             @Override
